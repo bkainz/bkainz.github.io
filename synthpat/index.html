@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>None of these patient CT scans is real</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      background: black;
+      color: white;
+      font-family: sans-serif;
+    }
+
+    .title-overlay {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      text-align: center;
+      padding: 16px;
+      font-size: 1.8rem;
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 10;
+      text-shadow: 0 0 6px black;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      width: 100vw;
+      padding: 4px;
+    }
+
+    .grid > div {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: black;
+    }
+
+    video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: auto;
+      transform: translate(-50%, -50%) rotate(90deg);
+      transform-origin: center;
+      object-fit: cover;
+      background: black;
+    }
+
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="title-overlay">None of these patient CT scans is real</div>
+  <div class="grid">
+    <div><video src="012.mp4" autoplay loop muted playsinline preload="auto"></video></div>
+    <div><video src="023.mp4" autoplay loop muted playsinline preload="auto"></video></div>
+    <div><video src="026.mp4" autoplay loop muted playsinline preload="auto"></video></div>
+    <div><video src="008.mp4" autoplay loop muted playsinline preload="auto"></video></div>
+    <div><video src="007.mp4" autoplay loop muted playsinline preload="auto"></video></div>
+    <div><video src="026.mp4" autoplay loop muted playsinline preload="auto"></video></div>
+  </div>
+</body>
+</html>
