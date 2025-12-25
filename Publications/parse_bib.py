@@ -86,23 +86,24 @@ def extract_year(entry):
         return 0
 
 def is_top_journal(journal_name):
-    """Check if journal is a top-tier journal - all journals except arXiv preprints"""
+    """Check if journal is a top-tier journal - all journals except arXiv, CoRR, medRxiv"""
     if not journal_name:
         return False
     journal_lower = journal_name.lower()
-    # Exclude arXiv preprints
-    if 'arxiv' in journal_lower:
+    # Exclude arXiv preprints, CoRR, and medRxiv
+    excluded = ['arxiv', 'corr', 'medrxiv']
+    if any(exc in journal_lower for exc in excluded):
         return False
     # All other journals are top journals
     return True
 
 def is_top_conference(venue):
-    """Check if conference is top-tier - all conferences except workshops, BVM, arXiv"""
+    """Check if conference is top-tier - all conferences except workshops, BVM, arXiv, RöFo"""
     if not venue:
         return False
     venue_lower = venue.lower()
-    # Exclude workshops, BVM (Bildverarbeitung fuer die Medizin), and arXiv only (not medrxiv journals)
-    excluded = ['workshop', 'bvm', 'bildverarbeitung']
+    # Exclude workshops, BVM (Bildverarbeitung fuer die Medizin), RöFo, and arXiv only (not medrxiv journals)
+    excluded = ['workshop', 'bvm', 'bildverarbeitung', 'rofo', 'fortschritte']
     # Special case: exclude if it's arxiv but NOT if it's a journal containing arxiv (like medrxiv)
     if 'arxiv' in venue_lower and 'medrxiv' not in venue_lower:
         return False
