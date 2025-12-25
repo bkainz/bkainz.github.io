@@ -74,10 +74,14 @@ def parse_bibtex(filename):
     return entries
 
 def extract_year(entry):
-    """Extract year from entry"""
+    """Extract year from entry and fix common errors"""
     year = entry['fields'].get('year', '0000')
     try:
-        return int(year)
+        year_int = int(year)
+        # Fix common Google Scholar export error: 1804 should be 2018
+        if year_int == 1804:
+            return 2018
+        return year_int
     except:
         return 0
 
