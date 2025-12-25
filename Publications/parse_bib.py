@@ -3,11 +3,14 @@ import re
 from collections import defaultdict
 
 def parse_bibtex(filename):
-    """Parse BibTeX file and return list of entries"""
+    """Parse BibTeX file and return list of entries (deduplicated by title)"""
     with open(filename, 'r', encoding='utf-8') as f:
         content = f.read()
     
     entries = []
+    seen_titles = set()
+    duplicates_count = 0
+    
     # Match @type{key, ... }
     pattern = r'@(\w+)\{([^,]+),\s*(.*?)\n\}'
     
@@ -28,11 +31,23 @@ def parse_bibtex(filename):
                 field_value = field_match.group(4)
             fields[field_name] = field_value
         
+        # Check for duplicate title
+        title = fields.get('title', '').strip().lower().replace('{', '').replace('}', '')
+        if title and title in seen_titles:
+            duplicates_count += 1
+            continue  # Skip duplicate
+        
+        if title:
+            seen_titles.add(title)
+        
         entries.append({
             'type': entry_type,
             'key': entry_key,
             'fields': fields
         })
+    
+    if duplicates_count > 0:
+        print(f"Removed {duplicates_count} duplicate entries")
     
     return entries
 
