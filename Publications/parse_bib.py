@@ -168,25 +168,7 @@ def generate_publication_list(entries):
     
     html = ''
     
-    # First, featured publications (top-tier from recent years)
-    html += '<h2>Selected Publications (Top-Tier Venues)</h2>\n'
-    html += '<ul class="publication-list featured">\n'
-    
-    featured_count = 0
-    for year in sorted_years:
-        if year < 2018:  # Only recent ones for featured
-            continue
-        for entry in by_year[year]:
-            entry_html, is_top = format_entry(entry)
-            if is_top:
-                html += entry_html
-                featured_count += 1
-    
-    html += '</ul>\n'
-    
-    # Full list by year
-    html += '<h2>Complete Publication List</h2>\n'
-    
+    # Just render complete list by year with highlights
     for year in sorted_years:
         if year == 0:
             continue
