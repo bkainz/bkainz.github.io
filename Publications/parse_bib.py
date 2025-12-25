@@ -67,12 +67,15 @@ def is_top_journal(journal_name):
     return True
 
 def is_top_conference(venue):
-    """Check if conference is top-tier - all conferences except workshops, BVM, arXiv, medRxiv"""
+    """Check if conference is top-tier - all conferences except workshops, BVM, arXiv"""
     if not venue:
         return False
     venue_lower = venue.lower()
-    # Exclude workshops, BVM, arXiv, medRxiv
-    excluded = ['workshop', 'bvm', 'arxiv', 'medrxiv']
+    # Exclude workshops, BVM (Bildverarbeitung fuer die Medizin), and arXiv only (not medrxiv journals)
+    excluded = ['workshop', 'bvm', 'bildverarbeitung']
+    # Special case: exclude if it's arxiv but NOT if it's a journal containing arxiv (like medrxiv)
+    if 'arxiv' in venue_lower and 'medrxiv' not in venue_lower:
+        return False
     return not any(exc in venue_lower for exc in excluded)
 
 def format_authors(authors):
@@ -80,31 +83,17 @@ def format_authors(authors):
     if not authors:
         return ""
     
-    # Convert LaTeX umlauts and special characters to Unicode
-    latex_to_unicode = {
-        r'{\"a}': 'ä', r'{\\"a}': 'ä', r'\\"a': 'ä',
-        r'{\"o}': 'ö', r'{\\"o}': 'ö', r'\\"o': 'ö',
-        r'{\"u}': 'ü', r'{\\"u}': 'ü', r'\\"u': 'ü',
-        r'{\"A}': 'Ä', r'{\\"A}': 'Ä', r'\\"A': 'Ä',
-        r'{\"O}': 'Ö', r'{\\"O}': 'Ö', r'\\"O': 'Ö',
-        r'{\"U}': 'Ü', r'{\\"U}': 'Ü', r'\\"U': 'Ü',
-        r'{\ss}': 'ß', r'\ss': 'ß',
-        r'{\'e}': 'é', r"{\\'e}": 'é', r"\'e": 'é',
-        r'{\'a}': 'á', r"{\\'a}": 'á', r"\'a": 'á',
-        r'{\'i}': 'í', r"{\\'i}": 'í', r"\'i": 'í',
-        r'{\'o}': 'ó', r"{\\'o}": 'ó', r"\'o": 'ó',
-        r'{\`e}': 'è', r'{\\`e}': 'è', r'\`e': 'è',
-        r'{\^e}': 'ê', r'{\\^e}': 'ê', r'\^e': 'ê',
-        r'{\c c}': 'ç', r'{\\c c}': 'ç', r'\c c': 'ç',
-        r'{\~n}': 'ñ', r'{\\~n}': 'ñ', r'\~n': 'ñ',
-    }
+    # Handle LaTeX umlauts: \"a or {\"a} -> ä
+    authors = re.sub(r'\{?\\"([aouAOU])\}?', lambda m: {'a': 'ä', 'o': 'ö', 'u': 'ü', 'A': 'Ä', 'O': 'Ö', 'U': 'Ü'}[m.group(1)], authors)
     
-    for latex, unicode_char in latex_to_unicode.items():
-        authors = authors.replace(latex, unicode_char)
-    
-    # Handle generic pattern like {\"x} where x is any letter
-    authors = re.sub(r'\{\\"\s*([a-zA-Z])\}', lambda m: m.group(1) + '̈', authors)
-    authors = re.sub(r'\\"\s*([a-zA-Z])', lambda m: m.group(1) + '̈', authors)
+    # Handle other common LaTeX accents
+    authors = re.sub(r"\{?\\'([eaiouEAIOU])\}?", lambda m: {'e': 'é', 'a': 'á', 'i': 'í', 'o': 'ó', 'u': 'ú', 'E': 'É', 'A': 'Á', 'I': 'Í', 'O': 'Ó', 'U': 'Ú'}[m.group(1)], authors)
+    authors = re.sub(r'\{?\\`([eaiouEAIOU])\}?', lambda m: {'e': 'è', 'a': 'à', 'i': 'ì', 'o': 'ò', 'u': 'ù', 'E': 'È', 'A': 'À', 'I': 'Ì', 'O': 'Ò', 'U': 'Ù'}[m.group(1)], authors)
+    authors = re.sub(r'\{?\\\^([eaiouEAIOU])\}?', lambda m: {'e': 'ê', 'a': 'â', 'i': 'î', 'o': 'ô', 'u': 'û', 'E': 'Ê', 'A': 'Â', 'I': 'Î', 'O': 'Ô', 'U': 'Û'}[m.group(1)], authors)
+    authors = re.sub(r'\{?\\~([nNoO])\}?', lambda m: {'n': 'ñ', 'N': 'Ñ', 'o': 'õ', 'O': 'Õ'}[m.group(1)], authors)
+    authors = re.sub(r'\{?\\c c\}?', 'ç', authors)
+    authors = re.sub(r'\{?\\c C\}?', 'Ç', authors)
+    authors = re.sub(r'\{?\\ss\}?', 'ß', authors)
     
     # Remove remaining curly braces
     authors = authors.replace('{', '').replace('}', '')
