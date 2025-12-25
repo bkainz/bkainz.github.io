@@ -82,10 +82,14 @@ def extract_year(entry):
         return 0
 
 def is_top_journal(journal_name):
-    """Check if journal is a top-tier journal - all journals get badge"""
+    """Check if journal is a top-tier journal - all journals except arXiv preprints"""
     if not journal_name:
         return False
-    # All journals are top journals (inverted logic)
+    journal_lower = journal_name.lower()
+    # Exclude arXiv preprints
+    if 'arxiv' in journal_lower:
+        return False
+    # All other journals are top journals
     return True
 
 def is_top_conference(venue):
