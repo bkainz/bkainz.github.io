@@ -76,14 +76,46 @@ def is_top_conference(venue):
     return not any(exc in venue_lower for exc in excluded)
 
 def format_authors(authors):
-    """Format author list"""
+    """Format author list and handle LaTeX special characters"""
     if not authors:
         return ""
+    
+    # Convert LaTeX umlauts and special characters to Unicode
+    latex_to_unicode = {
+        r'{\"a}': 'ä', r'{\\"a}': 'ä', r'\\"a': 'ä',
+        r'{\"o}': 'ö', r'{\\"o}': 'ö', r'\\"o': 'ö',
+        r'{\"u}': 'ü', r'{\\"u}': 'ü', r'\\"u': 'ü',
+        r'{\"A}': 'Ä', r'{\\"A}': 'Ä', r'\\"A': 'Ä',
+        r'{\"O}': 'Ö', r'{\\"O}': 'Ö', r'\\"O': 'Ö',
+        r'{\"U}': 'Ü', r'{\\"U}': 'Ü', r'\\"U': 'Ü',
+        r'{\ss}': 'ß', r'\ss': 'ß',
+        r'{\'e}': 'é', r"{\\'e}": 'é', r"\'e": 'é',
+        r'{\'a}': 'á', r"{\\'a}": 'á', r"\'a": 'á',
+        r'{\'i}': 'í', r"{\\'i}": 'í', r"\'i": 'í',
+        r'{\'o}': 'ó', r"{\\'o}": 'ó', r"\'o": 'ó',
+        r'{\`e}': 'è', r'{\\`e}': 'è', r'\`e': 'è',
+        r'{\^e}': 'ê', r'{\\^e}': 'ê', r'\^e': 'ê',
+        r'{\c c}': 'ç', r'{\\c c}': 'ç', r'\c c': 'ç',
+        r'{\~n}': 'ñ', r'{\\~n}': 'ñ', r'\~n': 'ñ',
+    }
+    
+    for latex, unicode_char in latex_to_unicode.items():
+        authors = authors.replace(latex, unicode_char)
+    
+    # Handle generic pattern like {\"x} where x is any letter
+    authors = re.sub(r'\{\\"\s*([a-zA-Z])\}', lambda m: m.group(1) + '̈', authors)
+    authors = re.sub(r'\\"\s*([a-zA-Z])', lambda m: m.group(1) + '̈', authors)
+    
+    # Remove remaining curly braces
+    authors = authors.replace('{', '').replace('}', '')
+    
     # Replace 'and' with comma
     authors = authors.replace(' and ', ', ')
+    
     # Bold Kainz, B or Kainz, Bernhard
     authors = re.sub(r'Kainz, Bernhard', '<strong>Kainz, B.</strong>', authors)
     authors = re.sub(r'Kainz, B\.', '<strong>Kainz, B.</strong>', authors)
+    
     return authors
 
 def format_entry(entry):
