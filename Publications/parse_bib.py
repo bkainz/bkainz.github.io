@@ -19,17 +19,39 @@ def parse_bibtex(filename):
         entry_key = match.group(2)
         entry_content = match.group(3)
         
-        # Parse fields
+        # Parse fields - need to handle nested braces properly
         fields = {}
-        field_pattern = r'(\w+)\s*=\s*\{([^}]*)\}|(\w+)\s*=\s*"([^"]*)"'
-        for field_match in re.finditer(field_pattern, entry_content):
-            if field_match.group(1):
+        # Split by newlines and process field by field
+        for line in entry_content.split('\n'):
+            line = line.strip()
+            if not line or line.startswith('%'):
+                continue
+            
+            # Match field = {value} or field = "value"
+            # For braces, need to handle nesting
+            field_match = re.match(r'(\w+)\s*=\s*\{', line)
+            if field_match:
                 field_name = field_match.group(1)
-                field_value = field_match.group(2)
+                # Find matching closing brace
+                brace_count = 1
+                value_start = line.index('{') + 1
+                i = value_start
+                while i < len(line) and brace_count > 0:
+                    if line[i] == '{':
+                        brace_count += 1
+                    elif line[i] == '}':
+                        brace_count -= 1
+                    i += 1
+                if brace_count == 0:
+                    field_value = line[value_start:i-1]
+                    fields[field_name] = field_value
             else:
-                field_name = field_match.group(3)
-                field_value = field_match.group(4)
-            fields[field_name] = field_value
+                # Try quoted string
+                field_match = re.match(r'(\w+)\s*=\s*"([^"]*)"', line)
+                if field_match:
+                    field_name = field_match.group(1)
+                    field_value = field_match.group(2)
+                    fields[field_name] = field_value
         
         # Check for duplicate title
         title = fields.get('title', '').strip().lower().replace('{', '').replace('}', '')
