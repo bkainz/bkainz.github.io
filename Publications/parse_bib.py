@@ -137,8 +137,8 @@ def format_authors(authors):
     
     return authors
 
-def format_entry(entry):
-    """Format a single entry as HTML"""
+def format_entry(entry, number=None):
+    """Format a single entry as HTML with optional numbering"""
     fields = entry['fields']
     entry_type = entry['type']
     
@@ -152,6 +152,11 @@ def format_entry(entry):
     html = f'<li>\n'
     html += f'  <div class="pub-entry">\n'
     
+    # Add numbering if provided
+    if number is not None:
+        html += f'    <div class="pub-number">[{number}]</div>\n'
+        html += f'    <div class="pub-content">\n'
+    
     # Check if top-tier
     is_top = False
     badge = ''
@@ -159,7 +164,7 @@ def format_entry(entry):
     if entry_type == 'article':
         journal = fields.get('journal', '')
         volume = fields.get('volume', '')
-        number = fields.get('number', '')
+        number_field = fields.get('number', '')
         pages = fields.get('pages', '')
         
         if is_top_journal(journal):
@@ -172,8 +177,8 @@ def format_entry(entry):
         
         if volume:
             html += f', {volume}'
-        if number:
-            html += f'({number})'
+        if number_field:
+            html += f'({number_field})'
         if pages:
             html += f':{pages}'
         html += f', {year}</div>\n'
@@ -201,13 +206,15 @@ def format_entry(entry):
         html += f'    <div class="pub-authors">{authors}</div>\n'
         html += f'    <div class="pub-venue">{year}</div>\n'
     
+    if number is not None:
+        html += f'    </div>\n'  # Close pub-content
     html += f'  </div>\n'
     html += f'</li>\n'
     
     return html, is_top
 
 def generate_publication_list(entries):
-    """Generate HTML publication list"""
+    """Generate HTML publication list with numbering"""
     # Group by year
     by_year = defaultdict(list)
     for entry in entries:
@@ -217,9 +224,13 @@ def generate_publication_list(entries):
     # Sort years descending
     sorted_years = sorted(by_year.keys(), reverse=True)
     
+    # Calculate total publications for numbering
+    total_pubs = sum(len(by_year[year]) for year in sorted_years if year != 0)
+    current_number = total_pubs
+    
     html = ''
     
-    # Just render complete list by year with highlights
+    # Just render complete list by year with highlights and numbering
     for year in sorted_years:
         if year == 0:
             continue
@@ -227,7 +238,8 @@ def generate_publication_list(entries):
         html += '<ul class="publication-list">\n'
         
         for entry in by_year[year]:
-            entry_html, _ = format_entry(entry)
+            entry_html, _ = format_entry(entry, current_number)
+            current_number -= 1
             html += entry_html
         
         html += '</ul>\n'
