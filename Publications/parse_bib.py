@@ -101,9 +101,10 @@ def format_authors(authors):
     # Replace 'and' with comma
     authors = authors.replace(' and ', ', ')
     
-    # Bold Kainz, B or Kainz, Bernhard
-    authors = re.sub(r'Kainz, Bernhard', '<strong>Kainz, B.</strong>', authors)
-    authors = re.sub(r'Kainz, B\.', '<strong>Kainz, B.</strong>', authors)
+    # Bold Kainz - handle both "Kainz, Bernhard" and "Kainz, B." formats
+    # Do Bernhard first, which converts to B., then do B. only if not already tagged
+    authors = re.sub(r'Kainz, Bernhard\b', 'Kainz, B.', authors)
+    authors = re.sub(r'(?<!<strong>)Kainz, B\.(?!</strong>)', '<strong>Kainz, B.</strong>', authors)
     
     return authors
 
