@@ -45,31 +45,20 @@ def extract_year(entry):
         return 0
 
 def is_top_journal(journal_name):
-    """Check if journal is a top-tier journal"""
+    """Check if journal is a top-tier journal - all journals get badge"""
     if not journal_name:
         return False
-    journal_lower = journal_name.lower()
-    top_journals = [
-        'ieee transactions on medical imaging',
-        'medical image analysis',
-        'nature machine intelligence',
-        'npj digital medicine',
-        'journal of machine learning research',
-        'nature',
-        'science',
-        'lancet',
-        'circulation',
-        'jmlr'
-    ]
-    return any(tj in journal_lower for tj in top_journals)
+    # All journals are top journals (inverted logic)
+    return True
 
 def is_top_conference(venue):
-    """Check if conference is top-tier"""
+    """Check if conference is top-tier - all conferences except workshops, BVM, arXiv, medRxiv"""
     if not venue:
         return False
     venue_lower = venue.lower()
-    top_conferences = ['miccai', 'cvpr', 'eccv', 'iccv', 'neurips', 'nips']
-    return any(tc in venue_lower for tc in top_conferences)
+    # Exclude workshops, BVM, arXiv, medRxiv
+    excluded = ['workshop', 'bvm', 'arxiv', 'medrxiv']
+    return not any(exc in venue_lower for exc in excluded)
 
 def format_authors(authors):
     """Format author list"""
