@@ -3,25 +3,175 @@ layout: default
 title: Bernhard Kainz
 ---
 
+<style>
+/* ── Hero Banner ─────────────────────────────────────────────────── */
+.hero-banner {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.35);
+  margin-bottom: 48px;
+}
+.hero-banner img {
+  width: 100%;
+  display: block;
+}
+.hero-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(5, 15, 35, 0.85), transparent);
+  padding: 24px 32px 20px;
+  color: #c8d8f0;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 0.75em;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* ── Profile section ─────────────────────────────────────────────── */
+.profile-section {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  margin-bottom: 44px;
+}
+.profile-photo-wrapper {
+  flex-shrink: 0;
+}
+.profile-photo-wrapper img {
+  width: 210px;
+  border-radius: 10px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+  display: block;
+}
+.profile-bio h1 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+.profile-bio p {
+  margin-top: 0;
+}
+
+/* ── Section heading ─────────────────────────────────────────────── */
+.section-heading {
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 1.6em;
+  color: #1a3a6b;
+  margin: 0 0 20px;
+  padding-bottom: 8px;
+  border-bottom: 3px solid #1a3a6b;
+}
+
+/* ── Research question cards ─────────────────────────────────────── */
+.rq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  margin-bottom: 44px;
+}
+.rq-card {
+  background: linear-gradient(135deg, #f4f7fc, #e6edf8);
+  border-left: 4px solid #1a3a6b;
+  border-radius: 8px;
+  padding: 18px 22px;
+  font-size: 1.2em;
+  line-height: 1.5em;
+  color: #333;
+}
+.rq-card strong {
+  color: #1a3a6b;
+}
+
+/* ── Affiliations & Ventures strip ──────────────────────────────── */
+.info-strip {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.info-box {
+  flex: 1;
+  min-width: 220px;
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-size: 1.2em;
+  line-height: 1.5em;
+  color: #333;
+}
+.info-box-title {
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-weight: bold;
+  font-size: 0.85em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #1a3a6b;
+  margin-bottom: 6px;
+}
+</style>
+
+<!-- ── Hero Banner ─────────────────────────────────────────────── -->
+<div class="hero-banner">
+  <img src="borderless_research.png"
+       alt="Borderless Research Group — Connecting Minds, Advancing Medicine, Across Borders">
+  <div class="hero-caption">Connecting Minds &nbsp;&middot;&nbsp; Advancing Medicine &nbsp;&middot;&nbsp; Across Borders</div>
+</div>
+
 <article class="home-content-main">
-<h1>Bernhard Kainz</h1>
-<p><img src="BernhardKainz.png" alt="Bernhard Kainz 2019" class="portrait-image" style="height:288px;float:left;padding-right:15px;border:none" align="left">
 
-<p>I am a Professor at <a href="https://www.fau.eu/"> Friedrich-Alexander-University Erlangen-Nuremberg</a> where I head the <a href="https://www.idea.tf.fau.eu/">Image Data Exploration and Analysis Lab (IDEA Lab)</a> and in the <a href="https://wp.doc.ic.ac.uk/bkainz/">Department of Computing</a> at <a href="https://www.imperial.ac.uk/">Imperial College London</a> where I lead the <a href="http://wp.doc.ic.ac.uk/bkainz/">human-in-the-loop computing group</a> and co-lead the <a href="https://biomedia.doc.ic.ac.uk/">biomedical image analysis research group (BioMedIA)</a>. We are a post-pandemic, borderless research group, across nations and institutions. 
-<p>
-Our research focuses on advancing intelligent algorithms for multi-modal healthcare. We develop new generative and discriminative machine learning methods to enhance diagnostic decision-making, provide real-time guidance to human operators during diagnostic procedures, and explore emerging paradigms such as normative learning to ensure the safety of machine learning and bring its applications to the front lines of patient care.
-<p>
-Our current research questions are:
-<ul>
-<li>Can we democratize rare healthcare expertise through Machine Learning, providing guidance in real-time applications and second reader expertise in retrospective analysis?</li>
-<li>Can we develop normative learning from large populations, integrating imaging, patient records and -omics, leading to data analysis that mimics human decision making?</li>
-<li>Can we provide human interpretability and effective human-machine teamwork of machine decision making to support the ‘right for explanation’ in healthcare?</li>
-</ul>
-<p>
-My teaching is focused on real-time computing, Machine Learning, Image Analysis, Computer Graphics and Visualisation. 
-<p>
-I am a scientific advisor for <a href="https://thinksono.com/">ThinkSono Ltd.</a> and co-founder of <a href="https://fraiya.com/">Fraiya Ltd.</a>.
-<p>
+  <!-- ── Profile ─────────────────────────────────────────────── -->
+  <div class="profile-section">
+    <div class="profile-photo-wrapper">
+      <img src="BernhardKainz.png" alt="Bernhard Kainz">
+    </div>
+    <div class="profile-bio">
+      <h1>Bernhard Kainz</h1>
+      <p>I am a Professor at <a href="https://www.fau.eu/">Friedrich-Alexander-University Erlangen-Nuremberg</a>,
+         heading the <a href="https://www.idea.tf.fau.eu/">Image Data Exploration and Analysis Lab (IDEA Lab)</a>,
+         and in the <a href="https://wp.doc.ic.ac.uk/bkainz/">Department of Computing</a> at
+         <a href="https://www.imperial.ac.uk/">Imperial College London</a>, where I lead the
+         <a href="http://wp.doc.ic.ac.uk/bkainz/">human-in-the-loop computing group</a> and co-lead
+         <a href="https://biomedia.doc.ic.ac.uk/">BioMedIA</a>.
+         We are a post-pandemic, borderless research group spanning nations and institutions.</p>
+      <p>Our research focuses on advancing intelligent algorithms for multi-modal healthcare.
+         We develop generative and discriminative machine learning methods to enhance diagnostic
+         decision-making, provide real-time guidance during diagnostic procedures, and explore
+         normative learning to ensure the safety of ML at the front lines of patient care.</p>
+    </div>
+  </div>
 
+  <!-- ── Research Questions ──────────────────────────────────── -->
+  <h2 class="section-heading">Current Research Questions</h2>
+  <div class="rq-grid">
+    <div class="rq-card">
+      Can we <strong>democratize rare healthcare expertise</strong> through Machine Learning,
+      providing guidance in real-time applications and second-reader expertise in retrospective analysis?
+    </div>
+    <div class="rq-card">
+      Can we develop <strong>normative learning</strong> from large populations — integrating imaging,
+      patient records, and -omics — leading to data analysis that mimics human decision making?
+    </div>
+    <div class="rq-card">
+      Can we provide <strong>human interpretability</strong> and effective human-machine teamwork
+      to support the right for explanation in healthcare AI decisions?
+    </div>
+  </div>
 
+  <!-- ── Teaching & Ventures ─────────────────────────────────── -->
+  <div class="info-strip">
+    <div class="info-box">
+      <div class="info-box-title">Teaching</div>
+      Real-time computing, Machine Learning, Image Analysis, Computer Graphics and Visualisation.
+    </div>
+    <div class="info-box">
+      <div class="info-box-title">Industry & Ventures</div>
+      Scientific advisor for <a href="https://thinksono.com/">ThinkSono Ltd.</a> &nbsp;&middot;&nbsp;
+      Co-founder of <a href="https://fraiya.com/">Fraiya Ltd.</a>
+    </div>
+  </div>
 
+</article>
