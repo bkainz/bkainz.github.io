@@ -137,6 +137,35 @@ def format_authors(authors):
     
     return authors
 
+def format_links(fields):
+    """Build a pub-links div from arxiv/code/weights/data/url fields (if any)."""
+    links = []
+
+    arxiv = fields.get('arxiv', '').strip() or fields.get('eprint', '').strip()
+    if arxiv:
+        url = arxiv if arxiv.startswith('http') else f'https://arxiv.org/abs/{arxiv}'
+        links.append(f'\U0001F4DC <a href="{url}">arXiv</a>')
+
+    code = fields.get('code', '').strip()
+    if code:
+        links.append(f'\U0001F4BB <a href="{code}">Code</a>')
+
+    weights = fields.get('weights', '').strip()
+    if weights:
+        links.append(f'\U0001F3CB <a href="{weights}">Weights</a>')
+
+    data = fields.get('data', '').strip()
+    if data:
+        links.append(f'\U0001F4CA <a href="{data}">Data</a>')
+
+    url = fields.get('url', '').strip()
+    if url:
+        links.append(f'\U0001F517 <a href="{url}">Link</a>')
+
+    if links:
+        return f'    <div class="pub-links">{" | ".join(links)}</div>\n'
+    return ''
+
 def format_entry(entry, number=None):
     """Format a single entry as HTML with optional numbering"""
     fields = entry['fields']
@@ -205,7 +234,10 @@ def format_entry(entry, number=None):
         html += f'    <div class="pub-title">{title}</div>\n'
         html += f'    <div class="pub-authors">{authors}</div>\n'
         html += f'    <div class="pub-venue">{year}</div>\n'
-    
+
+    # Optional links (arXiv, code, weights, data, url)
+    html += format_links(fields)
+
     if number is not None:
         html += f'    </div>\n'  # Close pub-content
     html += f'  </div>\n'

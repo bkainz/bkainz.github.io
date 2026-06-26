@@ -16,8 +16,10 @@ This document provides comprehensive guidance for maintaining and updating the p
 1. Export publications from Google Scholar to BibTeX format
 2. Replace or update `Publications/publications2025.bib`
 3. Run the parser: `cd Publications && python3 parse_bib.py`
-4. Update the website: `head -321 index.html > new_index.html && cat publications_generated.html >> new_index.html && mv new_index.html index.html`
+4. Update the website: `head -336 index.html > new_index.html && printf '\n\n\n\n' >> new_index.html && cat publications_generated.html >> new_index.html && mv new_index.html index.html`
 5. Commit and push changes
+
+> **Note:** The `head -N` count is the line of the closing `</style>` tag, which shifts whenever the CSS or the "Recent Highlights" section above it is edited. Always confirm the current line with `grep -n '</style>' index.html` before running the command (it was `321`, now `336`).
 
 ### Automated BibTeX Parser (`parse_bib.py`)
 
@@ -33,6 +35,29 @@ This document provides comprehensive guidance for maintaining and updating the p
 - **Nested brace support** - Properly parses fields with nested braces like `M{\"u}ller`
 - **Reverse chronological numbering** - Publications numbered from total count down to 1
 - **Smart badge assignment** - Top Journal/Top Conference badges with configurable exclusions
+- **Optional links** - Renders a `pub-links` line (arXiv / Code / Weights / Data / Link) from optional BibTeX fields (see below)
+
+### Adding Links to a Publication (arXiv, Code, etc.)
+
+Add any of these optional fields to a BibTeX entry. The parser (`format_links()`) renders them as a links row beneath the venue:
+
+```bibtex
+@inproceedings{dombrowski2026learnability,
+  title={The Learnability Gap in Medical Latent Diffusion},
+  author={Dombrowski, Mischa and N{\"u}tzel, Felix and Kainz, Bernhard},
+  booktitle={International Conference on Medical Image Computing and Computer-Assisted Intervention},
+  arxiv={2605.17087},                                  % bare arXiv ID or full URL -> 📜 arXiv
+  code={https://github.com/MischaD/LearnabilityGap},   % 💻 Code
+  weights={https://huggingface.co/...},                % 🏋 Weights
+  data={https://huggingface.co/datasets/...},          % 📊 Data
+  url={https://example.com/project},                   % 🔗 Link
+  year={2026}
+}
+```
+
+- `arxiv` accepts a bare ID (`2605.17087`) or a full URL; bare IDs are expanded to `https://arxiv.org/abs/<id>`.
+- All link fields are optional; omit any you don't have. Entries with no link fields render exactly as before.
+- For a MICCAI/conference paper that is also on arXiv, use `@inproceedings` with `booktitle={...MICCAI...}` plus an `arxiv={...}` field (this keeps the Top Conference badge **and** adds the arXiv link). Do **not** put it as `@article` with `journal={arXiv preprint ...}`, which would drop the badge.
 
 **Badge Logic:**
 
@@ -50,9 +75,9 @@ This document provides comprehensive guidance for maintaining and updating the p
   - RöFo (Fortschritte auf dem Gebiet der Röntgenstrahlen)
 
 **Current Statistics:**
-- Total publications: 407
-- Duplicates removed per run: ~22
-- File: `publications2025.bib` (3,486 lines)
+- Total publications: 423 parsed (390 with valid years are numbered/rendered)
+- Duplicates removed per run: ~26
+- File: `publications2025.bib`
 
 ### Modifying Badge Criteria
 
@@ -70,7 +95,7 @@ def is_top_conference(venue):
 
 ### HTML Integration
 
-The parser generates `publications_generated.html` which is inserted into `index.html` after line 321 (the closing `</style>` tag). The integration includes:
+The parser generates `publications_generated.html` which is inserted into `index.html` after the closing `</style>` tag (currently line 336 — verify with `grep -n '</style>' index.html`). The integration includes:
 - Custom CSS for publication styling
 - Flexbox layout for numbering
 - Badge styling (green for journals, blue for conferences)
@@ -300,6 +325,7 @@ for entry in by_year[year]:
 - `.pub-title` - Publication title (1.05em)
 - `.pub-authors` - Author list (0.95em, gray)
 - `.pub-venue` - Journal/conference info (0.9em, lighter gray)
+- `.pub-links` - Optional arXiv/Code/Weights/Data/Link row (0.9em, blue links)
 - `.badge` - Base badge styling
 - `.badge-journal` - Green badge for journals
 - `.badge-conference` - Blue badge for conferences
