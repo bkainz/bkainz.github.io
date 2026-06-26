@@ -158,6 +158,11 @@ def format_links(fields):
     if data:
         links.append(f'\U0001F4CA <a href="{data}">Data</a>')
 
+    doi = fields.get('doi', '').strip()
+    if doi:
+        href = doi if doi.startswith('http') else f'https://doi.org/{doi}'
+        links.append(f'\U0001F517 <a href="{href}">DOI</a>')
+
     url = fields.get('url', '').strip()
     if url:
         links.append(f'\U0001F517 <a href="{url}">Link</a>')

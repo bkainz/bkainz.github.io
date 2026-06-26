@@ -50,12 +50,14 @@ Add any of these optional fields to a BibTeX entry. The parser (`format_links()`
   code={https://github.com/MischaD/LearnabilityGap},   % 💻 Code
   weights={https://huggingface.co/...},                % 🏋 Weights
   data={https://huggingface.co/datasets/...},          % 📊 Data
+  doi={10.1109/TMI.2022.3206221},                      % bare DOI or full URL -> 🔗 DOI
   url={https://example.com/project},                   % 🔗 Link
   year={2026}
 }
 ```
 
 - `arxiv` accepts a bare ID (`2605.17087`) or a full URL; bare IDs are expanded to `https://arxiv.org/abs/<id>`.
+- `doi` accepts a bare DOI (`10.1109/...`) or a full URL; bare DOIs are expanded to `https://doi.org/<doi>`. Most entries' DOIs were bulk-merged from a verified export via `scratchpad/merge_dois.py` (matches by normalized title; skips any DOI that maps to more than one title to avoid cross-matched garbage).
 - All link fields are optional; omit any you don't have. Entries with no link fields render exactly as before.
 - For a MICCAI/conference paper that is also on arXiv, use `@inproceedings` with `booktitle={...MICCAI...}` plus an `arxiv={...}` field (this keeps the Top Conference badge **and** adds the arXiv link). Do **not** put it as `@article` with `journal={arXiv preprint ...}`, which would drop the badge.
 
