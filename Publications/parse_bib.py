@@ -181,7 +181,7 @@ def format_entry(entry, number=None):
     year = fields.get('year', '')
     
     # Clean title
-    title = title.replace('{', '').replace('}', '')
+    title = title.replace('{', '').replace('}', '').replace(r'\&', '&amp;')
     
     html = f'<li>\n'
     html += f'  <div class="pub-entry">\n'
@@ -196,7 +196,7 @@ def format_entry(entry, number=None):
     badge = ''
     
     if entry_type == 'article':
-        journal = fields.get('journal', '')
+        journal = fields.get('journal', '').replace(r'\&', '&amp;')
         volume = fields.get('volume', '')
         number_field = fields.get('number', '')
         pages = fields.get('pages', '')
@@ -218,7 +218,7 @@ def format_entry(entry, number=None):
         html += f', {year}</div>\n'
         
     elif entry_type == 'inproceedings':
-        booktitle = fields.get('booktitle', '')
+        booktitle = fields.get('booktitle', '').replace(r'\&', '&amp;')
         pages = fields.get('pages', '')
         organization = fields.get('organization', '')
         

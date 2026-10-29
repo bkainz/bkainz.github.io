@@ -1,7 +1,7 @@
 # Website Maintenance Guide
 *Internal documentation for bkainz.github.io*
 
-Last updated: December 25, 2025
+Last updated: October 29, 2026
 
 ## Overview
 
@@ -77,7 +77,7 @@ Add any of these optional fields to a BibTeX entry. The parser (`format_links()`
   - RöFo (Fortschritte auf dem Gebiet der Röntgenstrahlen)
 
 **Current Statistics:**
-- Total publications: 423 parsed (390 with valid years are numbered/rendered)
+- Total publications: 451 parsed (418 with valid years are numbered/rendered)
 - Duplicates removed per run: ~26
 - File: `publications2025.bib`
 
