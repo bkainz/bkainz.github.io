@@ -154,11 +154,11 @@ The parser generates `publications_generated.html` which is inserted into `index
 
 ## 3. Research Content Updates
 
-### NeurIPS Highlights Section
+### Recent Conference Highlights Section
 
 **Location:** `Publications/index.html` lines ~110-130
 
-Update annually with new conference papers. Includes:
+Update with the latest NeurIPS, MICCAI, and other major conference papers. Includes:
 - Paper titles and descriptions
 - Links to arXiv, code repositories, weights
 - Project-specific information
