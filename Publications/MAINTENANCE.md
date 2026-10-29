@@ -184,6 +184,8 @@ Currently includes:
 - NHR@FAU (projects b143dc, b180dc)
 - Isambard-AI AIRR
 - ERC MIA-NORMAL 101083647
+- ERC Proof of Concept CHARMS 101246053
+- ERC Proof of Concept ORACLE 101326871
 - DFG grants
 - State of Bavaria (HTA)
 
